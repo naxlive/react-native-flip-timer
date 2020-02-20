@@ -3,11 +3,12 @@ import { View } from 'react-native';
 
 import style from '../style';
 
-function Separator() {
+function Separator(props) {
+  const { separatorOverrideStyle, overrideCircle } = props.separatorOverrideStyle;
   return (
-    <View style={style.separator}>
-      <View style={style.circle} />
-      <View style={style.circle} />
+    <View style={[style.separator, separatorOverrideStyle]}>
+      <View style={[style.circle, overrideCircle]} />
+      <View style={[style.circle, overrideCircle]} />
     </View>
   );
 }

@@ -8,7 +8,7 @@ import NumberCard from './number-card';
 import style from '../style';
 
 function FlipNumber({
-  number, unit, size, perspective, numberWrapperStyle, cardStyle, flipCardStyle, numberStyle,
+  overrideWrapperStyle, number, unit, size, perspective, numberWrapperStyle, cardStyle, flipCardStyle, numberStyle,
 }) {
   number = parseInt(number);
   let previousNumber = number - 1;
@@ -24,7 +24,7 @@ function FlipNumber({
   const previousNumberSplit = previousNumber.toString().split('');
 
   return (
-    <View style={style.wrapper}>
+    <View style={[style.wrapper, overrideWrapperStyle]}>
       <NumberCard
         number={numberSplit[0]}
         previousNumber={previousNumberSplit[0]}

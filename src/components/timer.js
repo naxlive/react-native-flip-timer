@@ -59,14 +59,14 @@ class Timer extends React.Component {
   }
 
   render() {
-    const { wrapperStyle, flipNumberProps } = this.props;
+    const { wrapperStyle, flipNumberProps, separatorOverrideStyle } = this.props;
     const { hours, minutes, seconds } = this.state;
     return (
       <View style={[style.wrapper, wrapperStyle]}>
         {!!hours && <FlipNumber number={hours} unit="hours" {...flipNumberProps} />}
-        <Separator />
+        <Separator separatorOverrideStyle={separatorOverrideStyle} />
         {!!minutes && <FlipNumber number={minutes} unit="minutes" {...flipNumberProps} />}
-        <Separator />
+        <Separator separatorOverrideStyle={separatorOverrideStyle} />
         {!!seconds && <FlipNumber number={seconds} unit="seconds" {...flipNumberProps} />}
       </View>
     );
@@ -85,6 +85,7 @@ Timer.propTypes = {
   ]).isRequired,
   play: PropTypes.bool,
   wrapperStyle: PropTypes.object,
+  separatorOverrideStyle: PropTypes.object,
   flipNumberProps: PropTypes.shape({
     size: PropTypes.number,
     perspective: PropTypes.number,
