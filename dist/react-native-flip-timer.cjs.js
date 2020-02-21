@@ -193,18 +193,16 @@ function addTime(hours, minutes, seconds) {
   hours = parseInt(hours);
   minutes = parseInt(minutes);
   seconds = parseInt(seconds);
-  seconds += 1;
+  seconds -= 1;
 
-  if (seconds >= 60) {
-    const m = seconds / 60 << 0;
-    minutes += m;
-    seconds -= 60 * m;
+  if (seconds < 0) {
+    minutes -= 1;
+    seconds = 59;
   }
 
-  if (minutes >= 60) {
-    const h = minutes / 60 << 0;
-    hours += h;
-    minutes -= 60 * h;
+  if (minutes < 0) {
+    hours -= 1;
+    minutes = 59;
   }
 
   return formatTime(hours, minutes, seconds);
@@ -471,6 +469,7 @@ NumberCard.propTypes = {
 /* eslint-disable no-param-reassign, radix */
 
 function FlipNumber(_ref) {
+  const { overrideWrapperStyle } = _ref;
   let { number } = _ref;
   const { unit } = _ref;
   const { size } = _ref;
@@ -493,7 +492,7 @@ function FlipNumber(_ref) {
   const numberSplit = number.toString().split('');
   const previousNumberSplit = previousNumber.toString().split('');
   return React.createElement(reactNative.View, {
-    style: style.wrapper,
+    style: [style.wrapper, overrideWrapperStyle],
   }, React.createElement(NumberCard, {
     number: numberSplit[0],
     previousNumber: previousNumberSplit[0],
@@ -529,13 +528,16 @@ FlipNumber.propTypes = {
   numberStyle: PropTypes.object,
 };
 
-function Separator() {
+function Separator(props) {
+  const _props$separatorOverr = props.separatorOverrideStyle;
+  const { separatorOverrideStyle } = _props$separatorOverr;
+  const { overrideCircle } = _props$separatorOverr;
   return React.createElement(reactNative.View, {
-    style: style.separator,
+    style: [style.separator, separatorOverrideStyle],
   }, React.createElement(reactNative.View, {
-    style: style.circle,
+    style: [style.circle, overrideCircle],
   }), React.createElement(reactNative.View, {
-    style: style.circle,
+    style: [style.circle, overrideCircle],
   }));
 }
 
@@ -621,6 +623,7 @@ const Timer =
     const _this$props2 = this.props;
     const { wrapperStyle } = _this$props2;
     const { flipNumberProps } = _this$props2;
+    const { separatorOverrideStyle } = _this$props2;
     const _this$state2 = this.state;
     const { hours } = _this$state2;
     const { minutes } = _this$state2;
@@ -630,10 +633,14 @@ const Timer =
     }, !!hours && React.createElement(FlipNumber, _extends({
       number: hours,
       unit: 'hours',
-    }, flipNumberProps)), React.createElement(Separator, null), !!minutes && React.createElement(FlipNumber, _extends({
+    }, flipNumberProps)), React.createElement(Separator, {
+      separatorOverrideStyle,
+    }), !!minutes && React.createElement(FlipNumber, _extends({
       number: minutes,
       unit: 'minutes',
-    }, flipNumberProps)), React.createElement(Separator, null), !!seconds && React.createElement(FlipNumber, _extends({
+    }, flipNumberProps)), React.createElement(Separator, {
+      separatorOverrideStyle,
+    }), !!seconds && React.createElement(FlipNumber, _extends({
       number: seconds,
       unit: 'seconds',
     }, flipNumberProps)));
@@ -650,6 +657,7 @@ Timer.propTypes = {
   time: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   play: PropTypes.bool,
   wrapperStyle: PropTypes.object,
+  separatorOverrideStyle: PropTypes.object,
   flipNumberProps: PropTypes.shape({
     size: PropTypes.number,
     perspective: PropTypes.number,
